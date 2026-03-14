@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{bg:'#080b14',panel:'#111827',neon:'#22d3ee'}}}}</script>
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body class="bg-bg text-slate-100 min-h-screen">
+  {% block body %}{% endblock %}
+</body>
+</html>

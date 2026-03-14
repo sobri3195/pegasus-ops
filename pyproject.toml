@@ -1,0 +1,7 @@
+[project]
+name = "pegasus-ops"
+version = "0.1.0"
+description = "Pegasus Ops - modern operations utility platform"
+authors = [{name = "Muhammad Sobri Maulana"}]
+readme = "README.md"
+requires-python = ">=3.12"

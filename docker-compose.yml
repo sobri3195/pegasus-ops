@@ -1,0 +1,56 @@
+version: '3.9'
+services:
+  web:
+    build: .
+    container_name: pegasus-web
+    env_file: .env
+    depends_on:
+      - db
+      - redis
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+
+  worker:
+    build: .
+    container_name: pegasus-worker
+    env_file: .env
+    depends_on:
+      - redis
+      - db
+    command: celery -A app.tasks.celery_app.celery_app worker --loglevel=info -Q media
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:16
+    container_name: pegasus-db
+    environment:
+      POSTGRES_USER: pegasus
+      POSTGRES_PASSWORD: pegasus
+      POSTGRES_DB: pegasus_ops
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: pegasus-redis
+    ports:
+      - "6379:6379"
+
+  nginx:
+    image: nginx:1.27
+    container_name: pegasus-nginx
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  pg_data:
