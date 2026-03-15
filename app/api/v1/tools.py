@@ -11,6 +11,7 @@ from app.core.deps import get_current_user
 from app.models.activity import UsageHistory
 from app.models.user import User
 from app.services.media_service import sanitize_filename, validate_dimensions, validate_timestamp
+from app.services.tool_catalog import filter_tools, list_categories, paginate_tools, related_tools
 from app.tasks.media_tasks import audio_extract, subtitle_generate, thumbnail_resize, video_cut, video_merge
 
 router = APIRouter(prefix="/tools", tags=["tools"])
@@ -97,3 +98,27 @@ async def run_thumbnail_resize(
     _log(db, user, "thumbnail-resizer", f"w={width},h={height},filename={saved_input.name}")
     thumbnail_resize.delay(str(saved_input), str(output), width, height)
     return {"message": "Thumbnail resizer job queued", "output": str(output)}
+
+
+@router.get("/catalog")
+def tool_catalog(category: str | None = None, query: str | None = None, page: int = 1, page_size: int = 10):
+    filtered = filter_tools(category=category, query=query)
+    try:
+        payload = paginate_tools(filtered, page=page, page_size=page_size)
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+    payload["items"] = [item.__dict__ for item in payload["items"]]
+    payload["categories"] = list_categories()
+    return payload
+
+
+@router.get("/catalog/{slug}/related")
+def tool_related(slug: str, limit: int = 4):
+    if limit < 1 or limit > 12:
+        raise HTTPException(status_code=422, detail="limit harus antara 1 sampai 12")
+
+    items = related_tools(slug, limit=limit)
+    if not items:
+        raise HTTPException(status_code=404, detail="Tool tidak ditemukan")
+    return {"items": [item.__dict__ for item in items], "limit": limit}
