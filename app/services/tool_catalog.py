@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass
+from math import ceil
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,6 +86,48 @@ def search_tools(query: str) -> list[ToolSpec]:
         for tool in TOOL_SPECS
         if normalized in tool.slug.lower() or normalized in tool.name.lower() or normalized in tool.category.lower()
     ]
+
+
+def filter_tools(category: str | None = None, query: str | None = None) -> list[ToolSpec]:
+    filtered = search_tools(query or "")
+    if not category:
+        return filtered
+
+    normalized_category = category.strip().lower()
+    return [tool for tool in filtered if tool.category.lower() == normalized_category]
+
+
+def list_categories() -> list[str]:
+    return sorted({tool.category for tool in TOOL_SPECS})
+
+
+def paginate_tools(tools: list[ToolSpec], page: int = 1, page_size: int = 10) -> dict[str, int | list[ToolSpec]]:
+    if page < 1:
+        raise ValueError("page minimal 1")
+    if page_size < 1 or page_size > 50:
+        raise ValueError("page_size harus antara 1 sampai 50")
+
+    total_items = len(tools)
+    total_pages = ceil(total_items / page_size) if total_items else 1
+    start = (page - 1) * page_size
+    end = start + page_size
+
+    return {
+        "items": tools[start:end],
+        "page": page,
+        "page_size": page_size,
+        "total_items": total_items,
+        "total_pages": total_pages,
+    }
+
+
+def related_tools(slug: str, limit: int = 4) -> list[ToolSpec]:
+    tool = get_tool_by_slug(slug)
+    if not tool:
+        return []
+
+    siblings = [item for item in TOOL_SPECS if item.category == tool.category and item.slug != tool.slug]
+    return siblings[:limit]
 
 
 def group_tools_by_category() -> dict[str, list[ToolSpec]]:
