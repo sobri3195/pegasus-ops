@@ -2,7 +2,7 @@
 
 **Author: Muhammad Sobri Maulana**
 
-Pegasus Ops adalah aplikasi web fullstack untuk creator, developer, admin, dan tim operasional. Proyek ini menggabungkan katalog tools (50 fitur), dashboard web, autentikasi JWT, logging aktivitas, dan worker async untuk pemrosesan media.
+Pegasus Ops adalah aplikasi web fullstack untuk creator, developer, admin, dan tim operasional. Proyek ini menggabungkan katalog tools (60 fitur), dashboard web, autentikasi JWT, logging aktivitas, dan worker async untuk pemrosesan media.
 
 ## Dokumentasi
 - Tutorial lengkap: [`TUTORIAL.md`](./TUTORIAL.md)
@@ -64,7 +64,7 @@ celery -A app.tasks.celery_app.celery worker --loglevel=info
 4. Cegah duplikasi email saat registrasi.
 5. Utility katalog tools: list, search, grouping by category.
 
-## Katalog 50 Fitur
+## Katalog 60 Fitur
 ### Media & Creator
 1) Video cutter 2) Video merger 3) Audio extractor 4) Subtitle generator 5) Thumbnail resizer 6) Image compressor 7) Background remover 8) Watermark tool 9) Image format converter 10) Caption generator 11) Hashtag generator 12) Content calendar 13) Bio generator 14) Link in bio builder 15) Reply template manager 16) Engagement tracker 17) Content idea scheduler 18) Title generator 19) Keyword clustering 20) Trend notes board.
 
@@ -76,6 +76,9 @@ celery -A app.tasks.celery_app.celery worker --loglevel=info
 
 ### Monitoring & Ops
 41) Website uptime checker 42) SSL checker 43) DNS lookup 44) Internal asset port checker 45) Web performance audit 46) Broken link checker 47) Sitemap validator 48) Robots.txt checker 49) Server resource dashboard 50) Log viewer & alert ringan.
+
+### 10 Fitur Baru
+51) AI script writer 52) Podcast show notes 53) Email subject generator 54) Schema diff checker 55) Cron expression builder 56) SQL prettifier 57) Meeting recap generator 58) SOP checklist builder 59) Incident timeline tracker 60) Competitor snapshot board.
 
 ## Testing
 ```bash
