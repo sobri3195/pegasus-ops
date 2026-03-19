@@ -1,1 +1,4 @@
 .card { background: rgba(15,23,42,.75); border: 1px solid #1e293b; border-radius: .75rem; padding: 1rem; box-shadow: 0 10px 25px rgba(34,211,238,.08);} 
+.card-highlight { background: linear-gradient(135deg, rgba(15,23,42,.92), rgba(30,41,59,.92)); border-color: rgba(34,211,238,.3); }
+.pill { display: inline-flex; align-items: center; gap: .35rem; padding: .2rem .6rem; border-radius: 999px; border: 1px solid #334155; font-size: .75rem; color: #cbd5e1; }
+.pill-success { border-color: rgba(34,197,94,.35); color: #86efac; background: rgba(20,83,45,.35); }
